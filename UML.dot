@@ -1,0 +1,26 @@
+
+digraph GreenWave {
+  rankdir=TB;
+  node [shape=record, fontname=Helvetica];
+  User [label="{User|+ user_id: str\n+ name: str\n+ email: str\n- password_hash: str\n+ check_password() }"];
+  Attendee [label="{Attendee : User|+ tickets: list\n+ reservations: list\n+ purchase_history: list }"];
+  Admin [label="{Admin : User}"];
+  Exhibition [label="{Exhibition|+ ex_id: str\n+ title: str\n+ workshops: list }"];
+  Workshop [label="{Workshop|+ ws_id: str\n+ title: str\n+ capacity: int\n+ attendee_ids: list }"];
+  Ticket [label="{Ticket|+ ticket_id: str\n+ owner_id: str\n+ price: float\n+ access_exhibitions: list }"];
+  ExhibitionPass [label="{ExhibitionPass : Ticket|+ selected_ex_id: str}"];
+  AllAccessPass [label="{AllAccessPass : Ticket|+ priority: bool\n+ recordings: bool}"];
+  Reservation [label="{Reservation|+ res_id: str\n+ ticket_id: str\n+ ws_id: str\n+ attendee_id: str }"];
+  Payment [label="{Payment|+ pay_id: str\n+ ticket_id: str\n+ amount: float\n+ method: str\n+ timestamp: datetime }"];
+
+  User -> Attendee [arrowhead="onormal", label="inherits"];
+  User -> Admin [arrowhead="onormal", label="inherits"];
+  Ticket -> ExhibitionPass [arrowhead="onormal", label="specializes"];
+  Ticket -> AllAccessPass [arrowhead="onormal", label="specializes"];
+  Exhibition -> Workshop [arrowhead="odiamond", label="aggregates"];
+  Workshop -> Reservation [arrowhead="vee", label="has"];
+  Ticket -> Reservation [arrowhead="vee", label="references"];
+  Attendee -> Ticket [arrowhead="vee", label="owns"];
+  Attendee -> Reservation [arrowhead="vee", label="makes"];
+  Payment -> Ticket [arrowhead="vee", label="pays_for"];
+}
